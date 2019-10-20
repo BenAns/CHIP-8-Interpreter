@@ -16,6 +16,10 @@ namespace CHIP_8_Interpreter
         private System.UInt16 programCounter;
         private System.UInt16 stackPointer;
 
+        // Variables for awaiting key presses
+        private bool awaitingKeyPress;
+        private byte registerForKey;
+
         /*
          *  Initialises the interpreter:
          *      Sets all memory and registers to 0
@@ -31,6 +35,7 @@ namespace CHIP_8_Interpreter
         /*
          * Sets all memory and registers to 0
          * Sets the program counter to 0x0200
+         * Makes it so that the interpreter does not await for a key press
          */
         private void InitialiseInterpreter()
         {
@@ -39,6 +44,9 @@ namespace CHIP_8_Interpreter
             addressRegister = 0x0000;
             programCounter = 0x0200;
             stackPointer = 0x0000;
+
+            awaitingKeyPress = false;
+            registerForKey = 0x10;
         }
 
         // Loads a ROM file into the interpreter's memory
@@ -64,6 +72,35 @@ namespace CHIP_8_Interpreter
         // Performs a single clock cycle
         public void PerformCycle(ref CHIP8_Screen screen, ref CHIP8_Keyboard keyboard)
         {
+            // Doesn't perform an operation if waiting for a key press
+            if(awaitingKeyPress)
+            {
+                AwaitKey(keyboard);
+                return;
+            }
+        }
+
+        // Checks if a new key has been pressed and, if it has, 
+        private void AwaitKey(CHIP8_Keyboard keyboard)
+        {
+            byte keyPress = keyboard.GetKeyPress();
+            if(keyPress != 0x10)
+            {
+                registers[registerForKey] = keyPress;
+                awaitingKeyPress = false;
+            }
+        }
+
+        // OP Codes
+
+        private void FX0A(byte byte1, byte byte2, CHIP8_Keyboard keyboard)
+        {
+            // Starts the process of awaiting for a key press
+            awaitingKeyPress = true;
+            keyboard.StartAwaitKeyPress();
+
+            // Gets the register to store the key press in
+            registerForKey = (byte)(byte1 & 0x0F);
         }
 
     }

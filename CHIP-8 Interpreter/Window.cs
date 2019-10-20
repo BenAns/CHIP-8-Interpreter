@@ -82,7 +82,7 @@ namespace CHIP_8_Interpreter
         {
             interpreter.PerformCycle(ref screen, ref keyboard);
             Refresh();
-            
+
             if(!interpreting)
             {
                 clockTimer.Stop();
@@ -145,10 +145,12 @@ namespace CHIP_8_Interpreter
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
+            keyboard.KeyDown(e);
         }
 
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
+            keyboard.KeyUp(e);
         }
     }
 }
