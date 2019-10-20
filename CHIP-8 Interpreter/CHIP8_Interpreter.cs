@@ -78,17 +78,139 @@ namespace CHIP_8_Interpreter
                 AwaitKey(keyboard);
                 return;
             }
+
+            // Gets an OP code from memory
+            byte byte1 = memory[programCounter++];
+            byte byte2 = memory[programCounter++];
+
+            // Processes the OP code
+            ProcessOPCode(byte1, byte2);
         }
 
-        // Checks if a new key has been pressed and, if it has, 
+        // Checks if a new key has been pressed and, if it has, puts its value into the appropriate register
         private void AwaitKey(CHIP8_Keyboard keyboard)
         {
+            // Awaits a key press if necessary
             byte keyPress = keyboard.GetKeyPress();
             if(keyPress != 0x10)
             {
                 registers[registerForKey] = keyPress;
                 awaitingKeyPress = false;
             }
+        }
+
+        // Processes an OP code instruction
+        private void ProcessOPCode(byte byte1, byte byte2)
+        {
+            switch((byte1 & 0xF0) >> 4)  // Filters through the first nibble
+            {
+                case 0x0:
+                    switch(byte1 & 0x0F)  // Filters through the second nibble
+                    {
+                        case 0x0:
+                            switch(byte2)  // Filters through the second byte
+                            {
+                                case 0xE0:  // 00E0
+                                    break;
+
+                                case 0xEE:  // 00EE
+                                    break;
+                            }
+                            break;
+                    }
+                    break;
+
+                case 0x1:  // 1NNN
+                    break;
+                case 0x2:  // 2NNN
+                    break;
+                case 0x3:  // 3XNN
+                    break;
+                case 0x4:  // 4XNN
+                    break;
+                case 0x5:
+                    switch(byte2 & 0xF)  // Filters through the fourth nibble
+                    {
+                        case 0x0:  // 5XY0
+                            break;
+                    }
+                    break;
+                case 0x6:  // 6XNN
+                    break;
+                case 0x7:  // 7XNN
+                    break;
+                case 0x8:
+                    switch(byte2 & 0xF)  // Filters through the fourth nibble
+                    {
+                        case 0x0:  // 8XY0
+                            break;
+                        case 0x1:  // 8XY1
+                            break;
+                        case 0x2:  // 8XY2
+                            break;
+                        case 0x3:  // 8XY3
+                            break;
+                        case 0x4:  // 8XY4
+                            break;
+                        case 0x5:  // 8XY5
+                            break;
+                        case 0x6:  // 8XY6
+                            break;
+                        case 0x7:  // 8XY7
+                            break;
+                        case 0xE:  // 8XYE
+                            break;
+                    }
+                    break;
+                case 0x9:
+                    switch(byte2 & 0xF)  // Filters through the fourth nibble
+                    {
+                        case 0x0:  // 9XY0
+                            break;
+                    }
+                    break;
+                case 0xA:  // ANNN
+                    break;
+                case 0xB:  // BNNN
+                    break;
+                case 0xC:  // CXNN
+                    break;
+                case 0xD:  // DXYN
+                    break;
+                case 0xE:
+                    switch(byte2)  // Filters through the second byte
+                    {
+                        case 0x9E:  // EX9E
+                            break;
+                        case 0xA1:  // EXA1
+                            break;
+                    }
+                    break;
+                case 0xF:
+                    switch(byte2)  // Filters through the second byte
+                    {
+                        case 0x07:  // FX07
+                            break;
+                        case 0x0A:  // FX0A
+                            break;
+                        case 0x15:  // FX15
+                            break;
+                        case 0x18:  // FX18
+                            break;
+                        case 0x1E:  // FX1E
+                            break;
+                        case 0x29:  // FX29
+                            break;
+                        case 0x33:  // FX33
+                            break;
+                        case 0x55:  // FX55
+                            break;
+                        case 0x65:  // FX65
+                            break;
+                    }
+                    break;
+            }
+
         }
 
         // OP Codes
