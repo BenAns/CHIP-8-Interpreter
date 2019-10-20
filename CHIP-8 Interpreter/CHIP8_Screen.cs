@@ -10,9 +10,9 @@ namespace CHIP_8_Interpreter
     class CHIP8_Screen
     {
         // Variables used to hold data about the current screen state
-        private byte[] screenData;
-        private Bitmap outputScreen;
-        int scaleFactor;
+        private byte[,] screenData;
+        private Graphics outputScreen;
+        private readonly int scaleFactor;
 
         /*
          *  Initialises the screen:
@@ -29,15 +29,71 @@ namespace CHIP_8_Interpreter
             }
 
             // Initialises the screen variables
-            screenData = new byte[64 * 32];
-            outputScreen = outputBitmap;
-            scaleFactor = outputScreen.Height / 32;
+            screenData = new byte[64, 32];
+            outputScreen = Graphics.FromImage(outputBitmap);
+            scaleFactor = outputBitmap.Height / 32;
 
             // Sets the screen black
-            using(Graphics graphics = Graphics.FromImage(outputScreen))
+            outputScreen.FillRectangle(Brushes.Black, 0, 0, outputBitmap.Width, outputBitmap.Height);
+        }
+
+        // Clears the screen
+        public void Clear()
+        {
+            // Sets the screen black
+            outputScreen.FillRectangle(new SolidBrush(Color.Black), 0, 0, 64 * scaleFactor, 32 * scaleFactor);
+
+            // Sets all the bits in screenData to 0
+            Array.Clear(screenData, 0, screenData.Length);
+        }
+
+        /*
+         *  Draws a sprite
+         *  Returns the new value of the status register
+         */
+         public byte Draw(int topLeftX, int topLeftY, byte[] rows)
+        {
+            byte statusRegister = 0;
+
+            // Puts each row of pixels onto the screen
+            for(int row = 0; row < rows.Length; row++)
             {
-                graphics.FillRectangle(new SolidBrush(Color.Black), 0, 0, outputScreen.Width, outputScreen.Height);
+                // Converts the current row to an array of pixels
+                byte[] pixels = ByteToBits(rows[row]);
+
+                // Puts each pixel onto the screen
+                for(int pixel = 0; pixel < 8; pixel++)
+                {
+                    // Gets the screen coordinates of the current pixel
+                    int pixelX = pixel + topLeftX;
+                    int pixelY = row + topLeftY;
+
+                    // Sets the pixel value in screenData
+                    screenData[pixelX, pixelY] ^= pixels[pixel];
+
+                    // Puts the pixel on the screen
+                    outputScreen.FillRectangle(screenData[pixelX, pixelY]  == 1 ? Brushes.White : Brushes.Black,
+                                               scaleFactor * pixelX, scaleFactor * pixelY, scaleFactor, scaleFactor);
+                    
+                    // Sets the value of the status register
+                    statusRegister |= (byte)(pixels[pixel] & ~screenData[pixel + topLeftX, row + topLeftY]);
+                }
             }
+
+            return statusRegister;
+        }
+
+        // Converts a byte to an array of 8 bits
+        private byte[] ByteToBits(byte processByte)
+        {
+            byte[] bits = new byte[8];
+            for(int i = 7; i > -1; i--)
+            {
+                bits[i] = (byte)(processByte & 0x01);
+                processByte >>= 1;
+            }
+
+            return bits;
         }
     }
 
