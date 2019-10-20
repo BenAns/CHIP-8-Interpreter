@@ -12,24 +12,29 @@ namespace CHIP_8_Interpreter
 {
     public partial class Window : Form
     {
+        public string ROMDirectory = "";
+
         public Window()
         {
             InitializeComponent();
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        // Selects the ROM file and starts the interpreter
+        private void SelectROM_Click(object sender, EventArgs e)
         {
+            // Gets the ROM file's path
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            fileDialog.ShowDialog();
+            ROMDirectory = fileDialog.FileName;
 
+            // Starts the interpreter
+            StartInterpretation();
         }
 
-        private void selectROMToolStripMenuItem_Click(object sender, EventArgs e)
+        // Starts the interpreter
+        private void StartInterpretation()
         {
-
-        }
-
-        private void settingToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
+            CHIP8_Interpreter interpreter = new CHIP8_Interpreter(ROMDirectory);
         }
     }
 }
