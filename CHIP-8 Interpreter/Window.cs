@@ -46,6 +46,7 @@ namespace CHIP_8_Interpreter
         // Starts the interpreter
         private void StartInterpreteter()
         {
+            // Ends any previous interpreter session
             interpreting = false;
 
             // Initialises the interpreter
