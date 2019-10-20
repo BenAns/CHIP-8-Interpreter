@@ -12,7 +12,13 @@ namespace CHIP_8_Interpreter
 {
     public partial class Window : Form
     {
-        public string ROMDirectory = "";
+        private string ROMDirectory = "";
+        private bool interpreting = false;
+        private const int clockSpeed = 500;
+        private CHIP8_Interpreter interpreter;
+        private CHIP8_Screen screen;
+        private CHIP8_Keyboard keyboard;
+        private Timer clockTimer;
 
         public Window()
         {
@@ -34,24 +40,52 @@ namespace CHIP_8_Interpreter
             ROMDirectory = fileDialog.FileName;
 
             // Starts the interpreter
-            StartInterpretation();
+            StartInterpreteter();
         }
 
         // Starts the interpreter
-        private void StartInterpretation()
+        private void StartInterpreteter()
         {
+            interpreting = false;
+
             // Initialises the interpreter
-            CHIP8_Interpreter interpreter = InitialiseInterpreter();
+            interpreter = InitialiseInterpreter();
             if(interpreter == null)
             {
                 return;
             }
 
             // Initialises the interpreter output
-            CHIP8_Screen screen = InitialiseScreen();
+            screen = InitialiseScreen();
             if(screen == null)
             {
                 return;
+            }
+
+            // Initialises the interpreter keyboard
+            keyboard = InitialiseKeyboard();
+            if(keyboard == null)
+            {
+                return;
+            }
+
+            // Sets up the clock to run at 500HZ and starts interpreting
+            interpreting = true;
+            clockTimer = new Timer();
+            clockTimer.Interval = 1000 / clockSpeed;
+            clockTimer.Tick += new System.EventHandler(ClockTick);
+            clockTimer.Start();
+        }
+
+        // Performs one clock tick of interpreting
+        private void ClockTick(object sender, EventArgs e)
+        {
+            interpreter.PerformCycle(ref screen, ref keyboard);
+            Refresh();
+            
+            if(!interpreting)
+            {
+                clockTimer.Stop();
             }
         }
 
@@ -93,6 +127,28 @@ namespace CHIP_8_Interpreter
                 MessageBox.Show("Error: Could not initialise the interpreter output", "Interpreter output error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
+        }
+
+        // Initialises the interpreter keyboard
+        private CHIP8_Keyboard InitialiseKeyboard()
+        {
+            try
+            {
+                return new CHIP8_Keyboard();
+            }
+            catch
+            {
+                MessageBox.Show("Error: Could not initialise the interpreter keyboard", "Interpreter keyboard error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+        }
+
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
         }
     }
 }

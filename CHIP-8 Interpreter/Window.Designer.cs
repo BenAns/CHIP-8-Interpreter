@@ -70,7 +70,7 @@
             // SelectROM
             // 
             this.SelectROM.Name = "SelectROM";
-            this.SelectROM.Size = new System.Drawing.Size(180, 22);
+            this.SelectROM.Size = new System.Drawing.Size(135, 22);
             this.SelectROM.Text = "Select ROM";
             this.SelectROM.Click += new System.EventHandler(this.SelectROM_Click);
             // 
@@ -86,13 +86,13 @@
             // InterpreterSettings
             // 
             this.InterpreterSettings.Name = "InterpreterSettings";
-            this.InterpreterSettings.Size = new System.Drawing.Size(180, 22);
+            this.InterpreterSettings.Size = new System.Drawing.Size(174, 22);
             this.InterpreterSettings.Text = "Interpreter Settings";
             // 
             // InputSettings
             // 
             this.InputSettings.Name = "InputSettings";
-            this.InputSettings.Size = new System.Drawing.Size(180, 22);
+            this.InputSettings.Size = new System.Drawing.Size(174, 22);
             this.InputSettings.Text = "Input Settings";
             // 
             // openFileDialog1
@@ -111,6 +111,8 @@
             this.MaximizeBox = false;
             this.Name = "Window";
             this.Text = "CHIP-8 Interpreter";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Window_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Window_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.InterpreterOutput)).EndInit();
             this.MenuStrip.ResumeLayout(false);
             this.MenuStrip.PerformLayout();

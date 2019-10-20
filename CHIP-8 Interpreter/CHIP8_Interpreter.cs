@@ -12,8 +12,9 @@ namespace CHIP_8_Interpreter
         // Registers and memory for the interpreter
         private byte[] registers;
         private byte[] memory;
-        private System.Int16 addressRegister;
-        private System.Int16 programCounter;
+        private System.UInt16 addressRegister;
+        private System.UInt16 programCounter;
+        private System.UInt16 stackPointer;
 
         /*
          *  Initialises the interpreter:
@@ -37,6 +38,7 @@ namespace CHIP_8_Interpreter
             memory = new byte[0x10000];
             addressRegister = 0x0000;
             programCounter = 0x0200;
+            stackPointer = 0x0000;
         }
 
         // Loads a ROM file into the interpreter's memory
@@ -58,6 +60,12 @@ namespace CHIP_8_Interpreter
             }
 
         }
+
+        // Performs a single clock cycle
+        public void PerformCycle(ref CHIP8_Screen screen, ref CHIP8_Keyboard keyboard)
+        {
+        }
+
     }
 
     class ROMTooLarge: Exception
