@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.852
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CHIP-8 Interpreter", "CHIP-8 Interpreter\CHIP-8 Interpreter.csproj", "{17C6DE52-7038-4BF2-9319-033E3195461F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{17C6DE52-7038-4BF2-9319-033E3195461F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17C6DE52-7038-4BF2-9319-033E3195461F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17C6DE52-7038-4BF2-9319-033E3195461F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17C6DE52-7038-4BF2-9319-033E3195461F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {531B35F5-4D07-425A-AF2B-A6F0E2494C82}
+	EndGlobalSection
+EndGlobal
