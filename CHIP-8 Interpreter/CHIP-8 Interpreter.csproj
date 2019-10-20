@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CHIP8_Interpreter.cs" />
+    <Compile Include="CHIP8_Screen.cs" />
     <Compile Include="Window.cs">
       <SubType>Form</SubType>
     </Compile>

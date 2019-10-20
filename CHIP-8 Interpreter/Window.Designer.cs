@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.InterpreterOutput = new System.Windows.Forms.PictureBox();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.MenuStrip = new System.Windows.Forms.MenuStrip();
             this.FileToolStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.SelectROM = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingsToolStrip = new System.Windows.Forms.ToolStripMenuItem();
@@ -37,27 +37,27 @@
             this.InputSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.InterpreterOutput)).BeginInit();
-            this.menuStrip1.SuspendLayout();
+            this.MenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // InterpreterOutput
             // 
-            this.InterpreterOutput.Location = new System.Drawing.Point(142, 141);
+            this.InterpreterOutput.Location = new System.Drawing.Point(0, 27);
             this.InterpreterOutput.Name = "InterpreterOutput";
-            this.InterpreterOutput.Size = new System.Drawing.Size(320, 160);
+            this.InterpreterOutput.Size = new System.Drawing.Size(640, 320);
             this.InterpreterOutput.TabIndex = 1;
             this.InterpreterOutput.TabStop = false;
             // 
-            // menuStrip1
+            // MenuStrip
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FileToolStrip,
             this.SettingsToolStrip});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(624, 24);
-            this.menuStrip1.TabIndex = 2;
-            this.menuStrip1.Text = "menuStrip1";
+            this.MenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.MenuStrip.Name = "MenuStrip";
+            this.MenuStrip.Size = new System.Drawing.Size(684, 24);
+            this.MenuStrip.TabIndex = 2;
+            this.MenuStrip.Text = "menuStrip1";
             // 
             // FileToolStrip
             // 
@@ -103,16 +103,17 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(624, 441);
+            this.ClientSize = new System.Drawing.Size(684, 361);
             this.Controls.Add(this.InterpreterOutput);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
-            this.MinimumSize = new System.Drawing.Size(400, 400);
+            this.Controls.Add(this.MenuStrip);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MainMenuStrip = this.MenuStrip;
+            this.MaximizeBox = false;
             this.Name = "Window";
             this.Text = "CHIP-8 Interpreter";
             ((System.ComponentModel.ISupportInitialize)(this.InterpreterOutput)).EndInit();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.MenuStrip.ResumeLayout(false);
+            this.MenuStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -120,7 +121,7 @@
 
         #endregion
         private System.Windows.Forms.PictureBox InterpreterOutput;
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.MenuStrip MenuStrip;
         private System.Windows.Forms.ToolStripMenuItem FileToolStrip;
         private System.Windows.Forms.ToolStripMenuItem SelectROM;
         private System.Windows.Forms.ToolStripMenuItem SettingsToolStrip;
