@@ -75,8 +75,6 @@ namespace CHIP_8_Interpreter
                     }
 
                     // Sets the pixel value in screenData
-                    Console.WriteLine(pixelX.ToString());
-                    Console.WriteLine(pixelY.ToString());
                     screenData[pixelX, pixelY] ^= pixels[pixel];
 
                     // Puts the pixel on the screen

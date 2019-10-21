@@ -29,6 +29,11 @@ namespace CHIP_8_Interpreter
             int height = InterpreterOutput.ClientRectangle.Height;
             this.Width = InterpreterOutput.ClientRectangle.X + width;
             this.Height = InterpreterOutput.ClientRectangle.Y + height;
+
+            // Sets CHIP-8 Objects to null
+            interpreter = null;
+            screen = null;
+            keyboard = null;
         }
 
         // Selects the ROM file and starts the interpreter
@@ -146,12 +151,18 @@ namespace CHIP_8_Interpreter
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            keyboard.KeyDown(e);
+            if(keyboard != null)
+            {
+                keyboard.KeyDown(e);
+            }
         }
 
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
-            keyboard.KeyUp(e);
+            if(keyboard != null)
+            {
+                keyboard.KeyUp(e);
+            }
         }
     }
 }

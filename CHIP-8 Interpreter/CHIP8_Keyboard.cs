@@ -14,7 +14,6 @@ namespace CHIP_8_Interpreter
         public Keys[] configuration;
         private byte latestKeyDown;
         private bool keyDownUpdate;
-        private Timer waitTimer;
         private object update = new object();
 
         /*

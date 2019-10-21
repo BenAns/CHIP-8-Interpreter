@@ -183,7 +183,7 @@ namespace CHIP_8_Interpreter
                     switch(byte2 & 0x0F)  // Filters through the fourth nibble
                     {
                         case 0x0:  // 5XY0
-                            OPCode_5XY0((byte)(byte1 & 0x0F), (byte)((byte1 & 0xF0) >> 4));
+                            OPCode_5XY0((byte)(byte1 & 0x0F), (byte)((byte2 & 0xF0) >> 4));
                             break;
                     }
                     break;
@@ -200,39 +200,39 @@ namespace CHIP_8_Interpreter
                     switch(byte2 & 0x0F)  // Filters through the fourth nibble
                     {
                         case 0x0:  // 8XY0
-                            OPCode_8XY0((byte)(byte1 & 0x0F), (byte)((byte1 & 0xF0) >> 4));
+                            OPCode_8XY0((byte)(byte1 & 0x0F), (byte)((byte2 & 0xF0) >> 4));
                             break;
 
                         case 0x1:  // 8XY1
-                            OPCode_8XY1((byte)(byte1 & 0x0F), (byte)((byte1 & 0xF0) >> 4));
+                            OPCode_8XY1((byte)(byte1 & 0x0F), (byte)((byte2 & 0xF0) >> 4));
                             break;
 
                         case 0x2:  // 8XY2
-                            OPCode_8XY2((byte)(byte1 & 0x0F), (byte)((byte1 & 0xF0) >> 4));
+                            OPCode_8XY2((byte)(byte1 & 0x0F), (byte)((byte2 & 0xF0) >> 4));
                             break;
 
                         case 0x3:  // 8XY3
-                            OPCode_8XY3((byte)(byte1 & 0x0F), (byte)((byte1 & 0xF0) >> 4));
+                            OPCode_8XY3((byte)(byte1 & 0x0F), (byte)((byte2 & 0xF0) >> 4));
                             break;
 
                         case 0x4:  // 8XY4
-                            OPCode_8XY4((byte)(byte1 & 0x0F), (byte)((byte1 & 0xF0) >> 4));
+                            OPCode_8XY4((byte)(byte1 & 0x0F), (byte)((byte2 & 0xF0) >> 4));
                             break;
 
                         case 0x5:  // 8XY5
-                            OPCode_8XY5((byte)(byte1 & 0x0F), (byte)((byte1 & 0xF0) >> 4));
+                            OPCode_8XY5((byte)(byte1 & 0x0F), (byte)((byte2 & 0xF0) >> 4));
                             break;
 
                         case 0x6:  // 8XY6
-                            OPCode_8XY6((byte)(byte1 & 0x0F), (byte)((byte1 & 0xF0) >> 4));
+                            OPCode_8XY6((byte)(byte1 & 0x0F), (byte)((byte2 & 0xF0) >> 4));
                             break;
 
                         case 0x7:  // 8XY7
-                            OPCode_8XY7((byte)(byte1 & 0x0F), (byte)((byte1 & 0xF0) >> 4));
+                            OPCode_8XY7((byte)(byte1 & 0x0F), (byte)((byte2 & 0xF0) >> 4));
                             break;
 
                         case 0xE:  // 8XYE
-                            OPCode_8XYE((byte)(byte1 & 0x0F), (byte)((byte1 & 0xF0) >> 4));
+                            OPCode_8XYE((byte)(byte1 & 0x0F), (byte)((byte2 & 0xF0) >> 4));
                             break;
                     }
                     break;
@@ -241,7 +241,7 @@ namespace CHIP_8_Interpreter
                     switch(byte2 & 0x0F)  // Filters through the fourth nibble
                     {
                         case 0x0:  // 9XY0
-                            OPCode_9XY0((byte)(byte1 & 0x0F), (byte)((byte1 & 0xF0) >> 4));
+                            OPCode_9XY0((byte)(byte1 & 0x0F), (byte)((byte2 & 0xF0) >> 4));
                             break;
                     }
                     break;
@@ -362,7 +362,7 @@ namespace CHIP_8_Interpreter
         {
             if(registers[register] == number)
             {
-                programCounter++;
+                programCounter += 2;
             }
         }
 
@@ -370,7 +370,7 @@ namespace CHIP_8_Interpreter
         {
             if(registers[register] != number)
             {
-                programCounter++;
+                programCounter += 2;
             }
 
         }
@@ -379,7 +379,7 @@ namespace CHIP_8_Interpreter
         {
             if(registers[register1] == registers[register2])
             {
-                programCounter++;
+                programCounter += 2;
             }
         }
 
@@ -424,6 +424,7 @@ namespace CHIP_8_Interpreter
         {
             registers[0xF] = registers[register1] > registers[register2] ? (byte)0x01 : (byte)0x00;
             registers[register1] -= registers[register2];
+            ;
         }
 
         private void OPCode_8XY6(byte register1, byte register2)
@@ -449,7 +450,7 @@ namespace CHIP_8_Interpreter
         {
             if(registers[register1] != registers[register2])
             {
-                programCounter++;
+                programCounter += 2;
             }
         }
 
@@ -485,7 +486,7 @@ namespace CHIP_8_Interpreter
         {
             if(registers[register] < 0x10 && keyboard.keys[registers[register]])
             {
-                programCounter++;
+                programCounter += 2;
             }
         }
 
@@ -493,7 +494,7 @@ namespace CHIP_8_Interpreter
         {
             if(registers[register] < 0x10 && !keyboard.keys[registers[register]])
             {
-                programCounter++;
+                programCounter += 2;
             }
         }
 
