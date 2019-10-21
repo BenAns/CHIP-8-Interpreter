@@ -106,7 +106,6 @@
             this.ClientSize = new System.Drawing.Size(684, 361);
             this.Controls.Add(this.InterpreterOutput);
             this.Controls.Add(this.MenuStrip);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.MenuStrip;
             this.MaximizeBox = false;
             this.Name = "Window";

@@ -68,7 +68,15 @@ namespace CHIP_8_Interpreter
                     int pixelX = pixel + topLeftX;
                     int pixelY = row + topLeftY;
 
+                    // Makes sure pixelX and pixelY are in the valid range
+                    if(pixelX >= 64 || pixelY >= 32)
+                    {
+                        continue;
+                    }
+
                     // Sets the pixel value in screenData
+                    Console.WriteLine(pixelX.ToString());
+                    Console.WriteLine(pixelY.ToString());
                     screenData[pixelX, pixelY] ^= pixels[pixel];
 
                     // Puts the pixel on the screen

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Windows.Forms;
 
 namespace CHIP_8_Interpreter
 {
@@ -29,11 +30,13 @@ namespace CHIP_8_Interpreter
          *      Sets all memory, registers and timers to 0
          *      Initialises the program counter at 0x0200
          *      Gets the program's ROM data
+         *      Loads the sprites for characters into the ROM
          */
         public CHIP8_Interpreter(string ROMDirectory)
         {
             InitialiseInterpreter();
             LoadROM(ROMDirectory);
+            LoadCharacters();
         }
 
         /*
@@ -44,7 +47,7 @@ namespace CHIP_8_Interpreter
          */
         private void InitialiseInterpreter()
         {
-            registers = new byte[0xF];
+            registers = new byte[0x10];
             memory = new byte[0x10000];
             addressRegister = 0x0000;
             programCounter = 0x0200;
@@ -77,6 +80,33 @@ namespace CHIP_8_Interpreter
 
         }
 
+        // Loads the sprites for characters into ROM
+        private void LoadCharacters()
+        {
+            byte[] bytes = {0xF0, 0x90, 0x90, 0x90, 0xF0,
+                            0x20, 0x60, 0x20, 0x20, 0x70,
+                            0xF0, 0x10, 0xF0, 0x80, 0xF0,
+                            0xF0, 0x10, 0xF0, 0x10, 0xF0,
+                            0x90, 0x90, 0xF0, 0x10, 0x10,
+                            0xF0, 0x80, 0xF0, 0x10, 0xF0,
+                            0xF0, 0x80, 0xF0, 0x90, 0xF0,
+                            0xF0, 0x10, 0x20, 0x40, 0x40,
+                            0xF0, 0x90, 0xF0, 0x90, 0xF0,
+                            0xF0, 0x90, 0xF0, 0x10, 0xF0,
+                            0xF0, 0x90, 0xF0, 0x90, 0x90,
+                            0xE0, 0x90, 0xE0, 0x90, 0xE0,
+                            0xF0, 0x80, 0x80, 0x80, 0xF0,
+                            0xE0, 0x90, 0x90, 0x90, 0xE0,
+                            0xF0, 0x80, 0xF0, 0x80, 0xF0,
+                            0xF0, 0x80, 0xF0, 0x80, 0x80};
+            int fontsOffset = 0x40;
+
+            for(int i = 0; i < bytes.Length; i++)
+            {
+                memory[i + fontsOffset] = bytes[i];
+            }
+        }
+
         // Performs a single clock cycle
         public void PerformCycle(ref CHIP8_Screen screen, ref CHIP8_Keyboard keyboard)
         {
@@ -93,6 +123,8 @@ namespace CHIP_8_Interpreter
 
             // Processes the OP code
             ProcessOPCode(byte1, byte2, ref screen, ref keyboard);
+
+            return;
         }
 
         // Checks if a new key has been pressed and, if it has, puts its value into the appropriate register
@@ -204,6 +236,7 @@ namespace CHIP_8_Interpreter
                             break;
                     }
                     break;
+
                 case 0x9:
                     switch(byte2 & 0x0F)  // Filters through the fourth nibble
                     {
@@ -293,132 +326,180 @@ namespace CHIP_8_Interpreter
         
         private void OPCode_00E0(ref CHIP8_Screen screen)
         {
-
+            screen.Clear();
         }
 
         private void OPCode_00EE()
         {
+            // Checks to make sure the stack pointer is in a valid position
+            if(stackPointer == 0x0000)
+            {
+                return;
+            }
 
+            // Pops the stack into program counter
+            programCounter = (UInt16)(((memory[stackPointer - 2]) << 0x8) + SwapEndianness(memory[stackPointer - 1]));
+            stackPointer -= 2;
         }
 
         private void OPCode_1NNN(UInt16 address) 
         {
-
+            programCounter = address;
         }
 
         private void OPCode_2NNN(UInt16 address)
         {
+            // Pushes the program counter's current value onto the stack
+            stackPointer += 2;
+            memory[stackPointer - 2] = (byte)((programCounter & 0xFF00) >> 0x8);
+            memory[stackPointer - 1] = (byte)(programCounter & 0xFF);
 
+            // Sets the address of the program counter
+            programCounter = address;
         }
 
         private void OPCode_3XNN(byte register, byte number)
         {
-
+            if(registers[register] == number)
+            {
+                programCounter++;
+            }
         }
 
         private void OPCode_4XNN(byte register, byte number)
         {
+            if(registers[register] != number)
+            {
+                programCounter++;
+            }
 
         }
 
         private void OPCode_5XY0(byte register1, byte register2)
         {
-
+            if(registers[register1] == registers[register2])
+            {
+                programCounter++;
+            }
         }
 
         private void OPCode_6XNN(byte register, byte number)
         {
-
+            registers[register] = number;
         }
 
         private void OPCode_7XNN(byte register, byte number)
         {
-
+            registers[register] += number;
         }
 
         private void OPCode_8XY0(byte register1, byte register2)
         {
-
+            registers[register1] = registers[register2];
         }
 
         private void OPCode_8XY1(byte register1, byte register2)
         {
-
+            registers[register1] |= registers[register2];
         }
 
         private void OPCode_8XY2(byte register1, byte register2)
         {
-
+            registers[register1] &= registers[register2];
         }
 
         private void OPCode_8XY3(byte register1, byte register2)
         {
-
+            registers[register1] ^= registers[register2];
         }
 
         private void OPCode_8XY4(byte register1, byte register2)
         {
-
+            UInt16 sum = (UInt16)(registers[register1] + registers[register2]);
+            registers[0xF] = (byte)((sum & 0x0100) >> 8);
+            registers[register1] = (byte)(sum & 0x00FF);
         }
 
         private void OPCode_8XY5(byte register1, byte register2)
         {
-
+            registers[0xF] = registers[register1] > registers[register2] ? (byte)0x01 : (byte)0x00;
+            registers[register1] -= registers[register2];
         }
 
         private void OPCode_8XY6(byte register1, byte register2)
         {
-
+            registers[0XF] = (byte)(registers[register1] & 0x01);
+            registers[register1] >>= 1;
         }
 
         private void OPCode_8XY7(byte register1, byte register2)
         {
-
+            registers[0xF] = registers[register2] > registers[register1] ? (byte)0x01 : (byte)0x00;
+            byte difference = (byte)((registers[register2] - registers[register1]) & 0xFF);
+            registers[register1] = difference;
         }
 
         private void OPCode_8XYE(byte register1, byte register2)
         {
-
+            registers[0XF] = (byte)((registers[register1] & 0x80) >> 7);
+            registers[register1] <<= 1;
         }
 
         private void OPCode_9XY0(byte register1, byte register2)
         {
-
+            if(registers[register1] != registers[register2])
+            {
+                programCounter++;
+            }
         }
 
         private void OPCode_ANNN(UInt16 address)
         {
-
+            addressRegister = address;
         }
 
-        private void OPCode_BNNN(UInt16 address2)
+        private void OPCode_BNNN(UInt16 address)
         {
-
+            programCounter = (UInt16)(registers[0x0] + address);
         }
 
         private void OPCode_CXNN(byte register, byte number)
         {
-
+            registers[register] = (byte)((byte)new Random().Next(0, 256) & number);
         }
 
         private void OPCode_DXYN(byte register1, byte register2, byte number, CHIP8_Screen screen)
         {
+            // Gets the sprite
+            byte[] rows = new byte[number];
+            for(int i = 0; i < number; i++)
+            {
+                rows[i] = memory[addressRegister + i];
+            }
 
+            // Draws the sprite
+            registers[0xF] = screen.Draw(registers[register1], registers[register2], rows);
         }
 
         private void OPCode_EX9E(byte register, CHIP8_Keyboard keyboard)
         {
-
+            if(registers[register] < 0x10 && keyboard.keys[registers[register]])
+            {
+                programCounter++;
+            }
         }
 
         private void OPCode_EXA1(byte register, CHIP8_Keyboard keyboard)
         {
-
+            if(registers[register] < 0x10 && !keyboard.keys[registers[register]])
+            {
+                programCounter++;
+            }
         }
 
-        private void OPCode_FX07(byte register2)
+        private void OPCode_FX07(byte register)
         {
-
+            registers[register] = delayTimer;
         }
 
         private void OPCode_FX0A(byte register, CHIP8_Keyboard keyboard)
@@ -433,39 +514,104 @@ namespace CHIP_8_Interpreter
 
         private void OPCode_FX15(byte register)
         {
+            // Sets the value of the delay timer
+            delayTimer = registers[register];
 
+            // Decrements the delay timer at 60Hz
+            Timer delayTimerDecrement = new Timer();
+            delayTimerDecrement.Interval = 1000 / 60;
+            delayTimerDecrement.Tick += new System.EventHandler((object sender, EventArgs e) =>
+            {
+                delayTimer--;
+                if(delayTimer == 0)
+                {
+                    delayTimerDecrement.Stop();
+                }
+            });
+            delayTimerDecrement.Start();
         }
 
         private void OPCode_FX18(byte register)
         {
+            // Sets the value of the sound timer
+            soundTimer = registers[register];
 
+            // Decrements the sound timer at 60Hz
+            Timer soundTimerDecrement = new Timer();
+            soundTimerDecrement.Interval = 1000 / 60;
+            soundTimerDecrement.Tick += new System.EventHandler((object sender, EventArgs e) =>
+            {
+                soundTimer--;
+                if(soundTimer == 0)
+                {
+                    soundTimerDecrement.Stop();
+                }
+            });
+            soundTimerDecrement.Start();
         }
 
         private void OPCode_FX1E(byte register)
         {
-
+            addressRegister += registers[register];
         }
 
         private void OPCode_FX29(byte register)
         {
+            byte registerValue = registers[register];
 
+            // Makes sure the value in the register is in the valid range
+            if(registerValue > 0xF)
+            {
+                return;
+            }
+
+            // Sets the value of the address register
+            addressRegister = (UInt16)(0x40 + registerValue * 0x5);
         }
 
         private void OPCode_FX33(byte register)
         {
+            // Converts the register's value to BCD
+            byte registerValue = registers[register];
+            byte[] BCDBytes = new byte[3];
+            for(int i = 2; i > -1; i--)
+            {
+                BCDBytes[i] = (byte)(registerValue % 10);
+                registerValue /= 10;
+            }
 
+            // Moves the BCD value to memory
+            for(int i = 0; i < 3; i++)
+            {
+                memory[addressRegister + i] = BCDBytes[i];
+            }
         }
 
         private void OPCode_FX55(byte register)
         {
-
+            for(int i = 0; i <= register; i++)
+            {
+                memory[addressRegister + i] = registers[i];
+            }
         }
 
         private void OPCode_FX65(byte register)
         {
-
+            for(int i = 0; i <= register; i++)
+            {
+                registers[i] = memory[addressRegister + i];
+            }
         }
 
+        // Swaps the endianness of a 3 nibble number
+        private UInt16 SwapEndianness(UInt16 number)
+        {
+            int byte1 = number & 0xFF00;
+            int byte2 = number & 0x00FF;
+            int newNumber = (byte2 << 8) | byte1;
+
+            return (UInt16)newNumber;
+        }
     }
 
     class ROMTooLarge: Exception

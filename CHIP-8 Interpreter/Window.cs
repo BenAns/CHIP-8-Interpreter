@@ -70,7 +70,7 @@ namespace CHIP_8_Interpreter
                 return;
             }
 
-            // Sets up the clock to run at 500HZ and starts interpreting
+            // Sets up the clock to run at 500Hz and starts interpreting
             interpreting = true;
             clockTimer = new Timer();
             clockTimer.Interval = 1000 / clockSpeed;
