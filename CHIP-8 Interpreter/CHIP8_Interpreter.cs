@@ -323,7 +323,7 @@ namespace CHIP_8_Interpreter
          *  OP Codes:
          *      Each method executes the corresponding OP code instruction indicated by its name
          */
-        
+
         private void OPCode_00E0(ref CHIP8_Screen screen)
         {
             screen.Clear();
@@ -338,11 +338,11 @@ namespace CHIP_8_Interpreter
             }
 
             // Pops the stack into program counter
-            programCounter = (UInt16)(((memory[stackPointer - 2]) << 0x8) + SwapEndianness(memory[stackPointer - 1]));
+            programCounter = (UInt16)(((memory[stackPointer - 2]) << 0x8) + memory[stackPointer - 1]);
             stackPointer -= 2;
         }
 
-        private void OPCode_1NNN(UInt16 address) 
+        private void OPCode_1NNN(UInt16 address)
         {
             programCounter = address;
         }
@@ -602,16 +602,6 @@ namespace CHIP_8_Interpreter
             {
                 registers[i] = memory[addressRegister + i];
             }
-        }
-
-        // Swaps the endianness of a 3 nibble number
-        private UInt16 SwapEndianness(UInt16 number)
-        {
-            int byte1 = number & 0xFF00;
-            int byte2 = number & 0x00FF;
-            int newNumber = (byte2 << 8) | byte1;
-
-            return (UInt16)newNumber;
         }
     }
 

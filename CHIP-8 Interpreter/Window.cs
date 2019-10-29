@@ -27,8 +27,8 @@ namespace CHIP_8_Interpreter
             // Sets the resolution
             int width = InterpreterOutput.ClientRectangle.Width;
             int height = InterpreterOutput.ClientRectangle.Height;
-            this.Width = InterpreterOutput.ClientRectangle.X + width;
-            this.Height = InterpreterOutput.ClientRectangle.Y + height;
+            this.Width = InterpreterOutput.ClientRectangle.X + width + 100;
+            this.Height = InterpreterOutput.ClientRectangle.Y + height + 100;
 
             // Sets CHIP-8 Objects to null
             interpreter = null;
