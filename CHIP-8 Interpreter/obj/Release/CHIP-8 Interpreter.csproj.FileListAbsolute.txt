@@ -1,0 +1,9 @@
+C:\Users\benja\Desktop\CHIP-8 Interpreter\CHIP-8 Interpreter\CHIP-8 Interpreter\bin\Release\CHIP-8 Interpreter.exe.config
+C:\Users\benja\Desktop\CHIP-8 Interpreter\CHIP-8 Interpreter\CHIP-8 Interpreter\bin\Release\CHIP-8 Interpreter.exe
+C:\Users\benja\Desktop\CHIP-8 Interpreter\CHIP-8 Interpreter\CHIP-8 Interpreter\bin\Release\CHIP-8 Interpreter.pdb
+C:\Users\benja\Desktop\CHIP-8 Interpreter\CHIP-8 Interpreter\CHIP-8 Interpreter\obj\Release\CHIP_8_Interpreter.Properties.Resources.resources
+C:\Users\benja\Desktop\CHIP-8 Interpreter\CHIP-8 Interpreter\CHIP-8 Interpreter\obj\Release\CHIP_8_Interpreter.Window.resources
+C:\Users\benja\Desktop\CHIP-8 Interpreter\CHIP-8 Interpreter\CHIP-8 Interpreter\obj\Release\CHIP-8 Interpreter.csproj.GenerateResource.cache
+C:\Users\benja\Desktop\CHIP-8 Interpreter\CHIP-8 Interpreter\CHIP-8 Interpreter\obj\Release\CHIP-8 Interpreter.csproj.CoreCompileInputs.cache
+C:\Users\benja\Desktop\CHIP-8 Interpreter\CHIP-8 Interpreter\CHIP-8 Interpreter\obj\Release\CHIP-8 Interpreter.exe
+C:\Users\benja\Desktop\CHIP-8 Interpreter\CHIP-8 Interpreter\CHIP-8 Interpreter\obj\Release\CHIP-8 Interpreter.pdb

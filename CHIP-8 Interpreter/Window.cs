@@ -14,11 +14,13 @@ namespace CHIP_8_Interpreter
     {
         private string ROMDirectory = "";
         private bool interpreting = false;
-        private const int clockSpeed = 500;
+        private const int clockSpeed = 1000;
+        private const int frameRate = 60;
         private CHIP8_Interpreter interpreter;
         private CHIP8_Screen screen;
         private CHIP8_Keyboard keyboard;
         private Timer clockTimer;
+        private ulong clockTicks;
 
         public Window()
         {
@@ -75,10 +77,10 @@ namespace CHIP_8_Interpreter
                 return;
             }
 
-            // Sets up the clock to run at 500Hz and starts interpreting
+            // Sets up the clock to output at frameRate Hz (processes at clockSpeed Hz) and starts the interpreter
             interpreting = true;
             clockTimer = new Timer();
-            clockTimer.Interval = 1000 / clockSpeed;
+            clockTimer.Interval = 1000 / frameRate;
             clockTimer.Tick += new System.EventHandler(ClockTick);
             clockTimer.Start();
         }
@@ -86,9 +88,18 @@ namespace CHIP_8_Interpreter
         // Performs one clock tick of interpreting
         private void ClockTick(object sender, EventArgs e)
         {
-            interpreter.PerformCycle(ref screen, ref keyboard);
+            // Performs all the clock cycles for the current frame
+            do
+            {
+                interpreter.PerformCycle(ref screen, ref keyboard);
+                clockTicks++;
+            }
+            while(clockTicks % (clockSpeed / frameRate) != 0);
+
+            // Updates the screen for the current frame
             Refresh();
 
+            // Stops the current interpreter session if needed
             if(!interpreting)
             {
                 clockTimer.Stop();
