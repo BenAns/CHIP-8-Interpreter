@@ -14,7 +14,7 @@ namespace CHIP_8_Interpreter
     {
         private string ROMDirectory = "";
         private bool interpreting = false;
-        private const int clockSpeed = 1000;
+        private const int clockSpeed = 500;
         private const int frameRate = 60;
         private CHIP8_Interpreter interpreter;
         private CHIP8_Screen screen;
@@ -27,10 +27,8 @@ namespace CHIP_8_Interpreter
             InitializeComponent();
 
             // Sets the resolution
-            int width = InterpreterOutput.ClientRectangle.Width;
-            int height = InterpreterOutput.ClientRectangle.Height;
-            this.Width = InterpreterOutput.ClientRectangle.X + width + 100;
-            this.Height = InterpreterOutput.ClientRectangle.Y + height + 100;
+            this.ClientSize = new Size(InterpreterOutput.ClientRectangle.Width,
+                                       MenuStrip.ClientRectangle.Height + InterpreterOutput.ClientRectangle.Height);
 
             // Sets CHIP-8 Objects to null
             interpreter = null;

@@ -123,7 +123,6 @@ namespace CHIP_8_Interpreter
 
             // Processes the OP code
             ProcessOPCode(byte1, byte2, ref screen, ref keyboard);
-
             return;
         }
 

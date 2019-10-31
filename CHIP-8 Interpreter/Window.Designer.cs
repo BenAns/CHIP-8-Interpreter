@@ -32,9 +32,6 @@
             this.MenuStrip = new System.Windows.Forms.MenuStrip();
             this.FileToolStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.SelectROM = new System.Windows.Forms.ToolStripMenuItem();
-            this.SettingsToolStrip = new System.Windows.Forms.ToolStripMenuItem();
-            this.InterpreterSettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.InputSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.InterpreterOutput)).BeginInit();
             this.MenuStrip.SuspendLayout();
@@ -51,8 +48,7 @@
             // MenuStrip
             // 
             this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.FileToolStrip,
-            this.SettingsToolStrip});
+            this.FileToolStrip});
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
             this.MenuStrip.Size = new System.Drawing.Size(642, 24);
@@ -70,30 +66,9 @@
             // SelectROM
             // 
             this.SelectROM.Name = "SelectROM";
-            this.SelectROM.Size = new System.Drawing.Size(135, 22);
+            this.SelectROM.Size = new System.Drawing.Size(180, 22);
             this.SelectROM.Text = "Select ROM";
             this.SelectROM.Click += new System.EventHandler(this.SelectROM_Click);
-            // 
-            // SettingsToolStrip
-            // 
-            this.SettingsToolStrip.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.InterpreterSettings,
-            this.InputSettings});
-            this.SettingsToolStrip.Name = "SettingsToolStrip";
-            this.SettingsToolStrip.Size = new System.Drawing.Size(61, 20);
-            this.SettingsToolStrip.Text = "Settings";
-            // 
-            // InterpreterSettings
-            // 
-            this.InterpreterSettings.Name = "InterpreterSettings";
-            this.InterpreterSettings.Size = new System.Drawing.Size(174, 22);
-            this.InterpreterSettings.Text = "Interpreter Settings";
-            // 
-            // InputSettings
-            // 
-            this.InputSettings.Name = "InputSettings";
-            this.InputSettings.Size = new System.Drawing.Size(174, 22);
-            this.InputSettings.Text = "Input Settings";
             // 
             // openFileDialog1
             // 
@@ -125,9 +100,6 @@
         private System.Windows.Forms.MenuStrip MenuStrip;
         private System.Windows.Forms.ToolStripMenuItem FileToolStrip;
         private System.Windows.Forms.ToolStripMenuItem SelectROM;
-        private System.Windows.Forms.ToolStripMenuItem SettingsToolStrip;
-        private System.Windows.Forms.ToolStripMenuItem InterpreterSettings;
-        private System.Windows.Forms.ToolStripMenuItem InputSettings;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
